@@ -55,6 +55,15 @@
       "Status": 0,
       "Balance": 21340.10,
       "OpenedOn": "2026-05-25T14:13:00"
+    },
+        {
+      "AccountId": 4,
+      "AccountNumber": "ACCT-700004",
+      "CustomerId": 2,
+      "AccountType": 0,
+      "Status": 0,
+      "Balance": 99999.10,
+      "OpenedOn": "2026-05-25T14:13:00"
     }
   ],
   "Transactions": [

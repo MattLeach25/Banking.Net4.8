@@ -4,6 +4,10 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using LegacyBanking.Domain;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using System.Configuration;
+
 
 namespace LegacyBanking.Data
 {
@@ -30,7 +34,13 @@ namespace LegacyBanking.Data
                     return;
                 }
 
-                if (!File.Exists(GetStorePath()))
+                string connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
+                string containerName = "test";
+                string blobName = "LegacyBankingDb.txt";
+
+                var blobClient = new BlobClient(connectionString, containerName, blobName);
+
+                if (!blobClient.Exists())
                 {
                     Save(LoadSeedData());
                 }
@@ -43,9 +53,16 @@ namespace LegacyBanking.Data
         {
             lock (SyncRoot)
             {
+                string connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
+                string containerName = "test";
+                string blobName = "LegacyBankingDb.txt";
+
+                var blobClient = new BlobClient(connectionString, containerName, blobName);
+
                 Initialize();
-                using (var stream = File.OpenRead(GetStorePath()))
                 {
+                    var downloadedFile = blobClient.DownloadContent();
+                    var stream = downloadedFile.Value.Content.ToStream();
                     var data = Serializer.ReadObject(stream) as BankingDataFile;
                     if (data == null)
                     {
@@ -93,16 +110,19 @@ namespace LegacyBanking.Data
 
         private static void Save(BankingDataFile data)
         {
-            using (var stream = File.Create(GetStorePath()))
+            string connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
+            string containerName = "test";
+            string blobName = "LegacyBankingDb.txt";
+
+            var blobClient = new BlobClient(connectionString, containerName, blobName);
+            using (var stream = new MemoryStream())
             {
                 Serializer.WriteObject(stream, data);
+                stream.Position = 0;
+                blobClient.Upload(stream, overwrite: true);
             }
         }
 
-        private static string GetStorePath()
-        {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LegacyBankingDb.txt");
-        }
 
         private static BankingDataFile LoadSeedData()
         {
