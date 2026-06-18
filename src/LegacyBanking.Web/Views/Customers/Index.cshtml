@@ -1,0 +1,36 @@
+@model IEnumerable<LegacyBanking.Application.CustomerProfileDto>
+@{
+    ViewBag.Title = "Customers";
+}
+<section class="panel">
+    <div class="section-header">
+        <div>
+            <h1>Customer registry</h1>
+            <p>Legacy onboarding and account visibility for branch operations.</p>
+        </div>
+        <div>@Html.ActionLink("Onboard Customer", "Create", null, new { @class = "button" })</div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Number</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Accounts</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(customer.FullName, "Details", new { id = customer.CustomerNumber })</td>
+                    <td>@customer.CustomerNumber</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Status</td>
+                    <td>@customer.Accounts.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

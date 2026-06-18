@@ -1,0 +1,17 @@
+@model PaymentRequest
+@{
+    ViewBag.Title = "Submit Payment";
+}
+<section class="panel form-panel">
+    <h1>Submit payment</h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-grid">
+            <label>Account number @Html.TextBoxFor(model => model.AccountNumber)</label>
+            <label>Merchant @Html.TextBoxFor(model => model.MerchantName)</label>
+            <label>Amount @Html.TextBoxFor(model => model.Amount)</label>
+        </div>
+        <button type="submit" class="button">Send payment</button>
+    }
+</section>

@@ -1,0 +1,39 @@
+@model IEnumerable<LegacyBanking.Application.AccountDto>
+@{
+    ViewBag.Title = "Accounts";
+}
+<section class="panel">
+    <div class="section-header">
+        <div>
+            <h1>Accounts</h1>
+            <p>Branch view of balances across the monolithic core ledger.</p>
+        </div>
+        <div>
+            @Html.ActionLink("Open Account", "Open", null, new { @class = "button secondary" })
+            @Html.ActionLink("Transfer Funds", "Transfer", null, new { @class = "button" })
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Account</th>
+                <th>Owner</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model)
+            {
+                <tr>
+                    <td>@account.AccountNumber</td>
+                    <td>@account.CustomerName</td>
+                    <td>@account.AccountType</td>
+                    <td>@account.Status</td>
+                    <td>@String.Format("{0:C}", account.Balance)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

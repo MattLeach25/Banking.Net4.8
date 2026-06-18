@@ -1,0 +1,123 @@
+{
+  "$schema": "./tasks-schema.json",
+  "description": "Tasks for the LegacyBanking Azure cloud-readiness modernization plan, scoped to the selected assessment categories.",
+  "tasks": [
+    {
+      "type": "transform",
+      "id": "001-transform-file-system-management",
+      "description": "File System Management Migration",
+      "requirements": "Replace local or network file I/O (System.IO.File usage in src/LegacyBanking.Data/BankingDbContext.cs) with cloud-appropriate storage handling so the application is portable to Azure App Service/containers. Preserve existing data read/write behavior.",
+      "environmentConfiguration": null,
+      "kbId": "file-system-management-prompt",
+      "skills": [
+        {
+          "name": "file-system-management",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "generateNewIntegrationTests": "false",
+        "passUnitTests": "true",
+        "passIntegrationTests": "false",
+        "securityComplianceCheck": "false"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "002-transform-sqlclient-system-to-microsoft",
+      "description": "Migrate from System.Data.SqlClient to Microsoft.Data.SqlClient",
+      "requirements": "Replace the legacy System.Data.SqlClient dependency with the actively maintained Microsoft.Data.SqlClient package across the solution. Update namespaces, package references, and connection handling. This is a prerequisite for Managed Identity based Azure SQL connectivity.",
+      "environmentConfiguration": null,
+      "kbId": "sqlclient-system-to-microsoft",
+      "skills": [
+        {
+          "name": "migration-sqlclient-system-to-microsoft",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "generateNewIntegrationTests": "false",
+        "passUnitTests": "true",
+        "passIntegrationTests": "false",
+        "securityComplianceCheck": "false"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "003-transform-sql-server-to-azure-sql-db",
+      "description": "Migrate from SQL Server to Managed Identity Based Azure SQL Database",
+      "requirements": "Migrate the on-premises SQL Server connection (Web.config connection string 'LegacyBanking') to Azure SQL Database using Managed Identity (passwordless authentication). Remove SQL credentials from connection strings and rely on Azure AD/Managed Identity token-based access.",
+      "environmentConfiguration": null,
+      "kbId": "local-sql-server-to-azure-sql-db",
+      "skills": [
+        {
+          "name": "migration-local-sql-server-to-azure-sql-db",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "generateNewIntegrationTests": "false",
+        "passUnitTests": "true",
+        "passIntegrationTests": "false",
+        "securityComplianceCheck": "false"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "004-transform-windows-ad-to-entra-id",
+      "description": "Migrate from Windows AD to Microsoft Entra ID",
+      "requirements": "Replace Windows Authentication (detected in src/LegacyBanking.Web/Web.config) with Microsoft Entra ID authentication. Update the web application authentication configuration and pipeline to use Entra ID while preserving existing authorization behavior.",
+      "environmentConfiguration": null,
+      "kbId": "windows-ad-to-azure-ad",
+      "skills": [
+        {
+          "name": "migration-windows-ad-to-azure-ad",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "generateNewIntegrationTests": "false",
+        "passUnitTests": "true",
+        "passIntegrationTests": "false",
+        "securityComplianceCheck": "false"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "005-transform-plaintext-credential-to-azure-keyvault",
+      "description": "Migrate from Plaintext Credentials to Secured Credentials protected by Managed Identity and Azure Key Vault",
+      "requirements": "Move plaintext connection strings and secrets (connection strings without configuration builders in src/LegacyBanking.Web/Web.config) into Azure Key Vault, accessed via Managed Identity. Remove embedded credentials from configuration files.",
+      "environmentConfiguration": null,
+      "kbId": "plaintext-credential-to-azure-keyvault",
+      "skills": [
+        {
+          "name": "migration-plaintext-credential-to-azure-keyvault",
+          "location": "builtin"
+        }
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "generateNewIntegrationTests": "false",
+        "passUnitTests": "true",
+        "passIntegrationTests": "false",
+        "securityComplianceCheck": "true"
+      }
+    }
+  ],
+  "metadata": {
+    "planName": "LegacyBanking Azure Cloud Readiness",
+    "projectName": "LegacyBanking",
+    "language": "dotnet",
+    "createdAt": "2026-06-16T00:00:00Z",
+    "version": "1.0"
+  }
+}

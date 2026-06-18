@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LegacyBanking.Domain\LegacyBanking.Domain.csproj" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - LegacyBanking</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">LB</div>
+            <div>
+                <div class="brand-title">LegacyBanking</div>
+                <div class="brand-subtitle">Core retail and branch banking platform</div>
+            </div>
+        </div>
+        <nav class="nav-links">
+            @Html.ActionLink("Dashboard", "Index", "Home")
+            @Html.ActionLink("Customers", "Index", "Customers")
+            @Html.ActionLink("Accounts", "Index", "Accounts")
+            @Html.ActionLink("Payments", "Create", "Payments")
+            <a href="~/Services/BankingService.svc" target="_blank">WCF Service</a>
+        </nav>
+    </header>
+    <main class="shell">
+        @if (TempData["StatusMessage"] != null)
+        {
+            <div class="status-banner">@TempData["StatusMessage"]</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="footer">
+        Monolithic ASP.NET MVC 5 + WCF + LocalDB sample for modernization exercises.
+    </footer>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

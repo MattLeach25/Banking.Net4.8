@@ -1,0 +1,43 @@
+@model LegacyBanking.Application.CustomerProfileDto
+@{
+    ViewBag.Title = Model.FullName;
+}
+<section class="panel">
+    <div class="section-header">
+        <div>
+            <h1>@Model.FullName</h1>
+            <p>@Model.CustomerNumber · @Model.Status</p>
+        </div>
+        <div>@Html.ActionLink("Back to Customers", "Index", null, new { @class = "button secondary" })</div>
+    </div>
+    <div class="summary-grid">
+        <div><span>Email</span><strong>@Model.Email</strong></div>
+        <div><span>Phone</span><strong>@Model.PhoneNumber</strong></div>
+        <div><span>Date of Birth</span><strong>@Model.DateOfBirth.ToString("d")</strong></div>
+        <div><span>Created On</span><strong>@Model.CreatedOn.ToLocalTime().ToString("d")</strong></div>
+    </div>
+</section>
+<section class="panel">
+    <h2>Accounts</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model.Accounts)
+            {
+                <tr>
+                    <td>@account.AccountNumber</td>
+                    <td>@account.AccountType</td>
+                    <td>@account.Status</td>
+                    <td>@String.Format("{0:C}", account.Balance)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

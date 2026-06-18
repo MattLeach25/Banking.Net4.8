@@ -1,0 +1,22 @@
+@model OnboardCustomerRequest
+@{
+    ViewBag.Title = "Onboard Customer";
+}
+<section class="panel form-panel">
+    <h1>Onboard customer</h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-grid">
+            <label>First name @Html.TextBoxFor(model => model.FirstName)</label>
+            <label>Last name @Html.TextBoxFor(model => model.LastName)</label>
+            <label>National ID @Html.TextBoxFor(model => model.NationalId)</label>
+            <label>Email @Html.TextBoxFor(model => model.Email)</label>
+            <label>Phone @Html.TextBoxFor(model => model.PhoneNumber)</label>
+            <label>Date of birth @Html.TextBoxFor(model => model.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date" })</label>
+            <label>Initial account type @Html.EnumDropDownListFor(model => model.InitialAccountType)</label>
+            <label>Opening deposit @Html.TextBoxFor(model => model.OpeningDeposit)</label>
+        </div>
+        <button type="submit" class="button">Create customer</button>
+    }
+</section>

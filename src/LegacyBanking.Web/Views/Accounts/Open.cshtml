@@ -1,0 +1,17 @@
+@model OpenAccountRequest
+@{
+    ViewBag.Title = "Open Account";
+}
+<section class="panel form-panel">
+    <h1>Open account</h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-grid">
+            <label>Customer number @Html.TextBoxFor(model => model.CustomerNumber)</label>
+            <label>Account type @Html.EnumDropDownListFor(model => model.AccountType)</label>
+            <label>Opening deposit @Html.TextBoxFor(model => model.OpeningDeposit)</label>
+        </div>
+        <button type="submit" class="button">Open account</button>
+    }
+</section>

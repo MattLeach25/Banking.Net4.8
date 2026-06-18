@@ -1,0 +1,17 @@
+@model TransferFundsRequest
+@{
+    ViewBag.Title = "Transfer Funds";
+}
+<section class="panel form-panel">
+    <h1>Transfer funds</h1>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-grid">
+            <label>From account @Html.TextBoxFor(model => model.FromAccountNumber)</label>
+            <label>To account @Html.TextBoxFor(model => model.ToAccountNumber)</label>
+            <label>Amount @Html.TextBoxFor(model => model.Amount)</label>
+        </div>
+        <button type="submit" class="button">Submit transfer</button>
+    }
+</section>

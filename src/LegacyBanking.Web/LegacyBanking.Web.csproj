@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>LegacyBanking.Web</RootNamespace>
+    <AssemblyName>LegacyBanking.Web</AssemblyName>
+    <UseIISExpress>true</UseIISExpress>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LegacyBanking.Application\LegacyBanking.Application.csproj" />
+    <ProjectReference Include="..\LegacyBanking.Data\LegacyBanking.Data.csproj" />
+    <ProjectReference Include="..\LegacyBanking.Domain\LegacyBanking.Domain.csproj" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Routing" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageReference Include="Microsoft.AspNet.Razor" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
+  </ItemGroup>
+</Project>
