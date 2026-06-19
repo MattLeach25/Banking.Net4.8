@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: nuget restore LegacyBanking.sln
+
+      - name: Build
+        run: msbuild LegacyBanking.sln /p:Configuration=Release /p:Platform="Any CPU" /m
+
+      - name: Test
+        shell: pwsh
+        run: |
+          $vstest = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+          if (-not (Test-Path $vstest)) {
+            $vstest = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Professional\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+          }
+          if (-not (Test-Path $vstest)) {
+            $vstest = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+          }
+          if (-not (Test-Path $vstest)) {
+            throw "vstest.console.exe was not found on the runner."
+          }
+
+          & $vstest "tests\LegacyBanking.Tests\bin\Release\net48\LegacyBanking.Tests.dll"

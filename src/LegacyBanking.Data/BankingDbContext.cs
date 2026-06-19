@@ -25,12 +25,57 @@ namespace LegacyBanking.Data
         private static readonly DataContractJsonSerializer Serializer = new DataContractJsonSerializer(typeof(BankingDataFile));
         private static bool initialized;
 
+        // Test support: when true, use in-memory storage instead of Azure Blob
+        private static bool useInMemoryStore;
+        private static BankingDataFile inMemoryData;
+
+        /// <summary>
+        /// Switches to in-memory storage for unit testing.
+        /// Call this before each test to isolate test data from Azure.
+        /// </summary>
+        internal static void UseInMemoryStore()
+        {
+            lock (SyncRoot)
+            {
+                useInMemoryStore = true;
+                initialized = false;
+                inMemoryData = new BankingDataFile
+                {
+                    NextCustomerId = 1,
+                    NextAccountId = 1,
+                    NextTransactionId = 1,
+                    Customers = new List<CustomerRecord>(),
+                    Accounts = new List<AccountRecord>(),
+                    Transactions = new List<TransactionRecord>()
+                };
+            }
+        }
+
+        /// <summary>
+        /// Resets back to default (Azure Blob) storage.
+        /// </summary>
+        internal static void Reset()
+        {
+            lock (SyncRoot)
+            {
+                useInMemoryStore = false;
+                initialized = false;
+                inMemoryData = null;
+            }
+        }
+
         internal static void Initialize()
         {
             lock (SyncRoot)
             {
                 if (initialized)
                 {
+                    return;
+                }
+
+                if (useInMemoryStore)
+                {
+                    initialized = true;
                     return;
                 }
 
@@ -53,13 +98,19 @@ namespace LegacyBanking.Data
         {
             lock (SyncRoot)
             {
+                Initialize();
+
+                if (useInMemoryStore)
+                {
+                    return inMemoryData;
+                }
+
                 string connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
                 string containerName = "test";
                 string blobName = "LegacyBankingDb.txt";
 
                 var blobClient = new BlobClient(connectionString, containerName, blobName);
 
-                Initialize();
                 {
                     var downloadedFile = blobClient.DownloadContent();
                     var stream = downloadedFile.Value.Content.ToStream();
@@ -110,6 +161,12 @@ namespace LegacyBanking.Data
 
         private static void Save(BankingDataFile data)
         {
+            if (useInMemoryStore)
+            {
+                // In-memory mode: data is already modified in place, nothing to persist
+                return;
+            }
+
             string connectionString = ConfigurationManager.AppSettings["StorageConnectionString"];
             string containerName = "test";
             string blobName = "LegacyBankingDb.txt";

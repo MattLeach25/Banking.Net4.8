@@ -4,6 +4,11 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>LegacyBanking.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\LegacyBanking.Domain\LegacyBanking.Domain.csproj"/>
     <Reference Include="System.Runtime.Serialization"/>
     <Reference Include="System.Configuration"/>
