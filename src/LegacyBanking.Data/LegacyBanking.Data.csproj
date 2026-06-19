@@ -4,7 +4,17 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LegacyBanking.Domain\LegacyBanking.Domain.csproj" />
-    <Reference Include="System.Runtime.Serialization" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>LegacyBanking.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LegacyBanking.Domain\LegacyBanking.Domain.csproj"/>
+    <Reference Include="System.Runtime.Serialization"/>
+    <Reference Include="System.Configuration"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3"/>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.29.0"/>
   </ItemGroup>
 </Project>

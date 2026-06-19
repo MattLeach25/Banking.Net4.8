@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: nuget restore LegacyBanking.sln
+
+      - name: Build
+        run: msbuild LegacyBanking.sln /p:Configuration=Release /p:Platform="Any CPU" /m
+
+      - name: Test
+        run: dotnet test tests\LegacyBanking.Tests\LegacyBanking.Tests.csproj --configuration Release --framework net48 --logger "trx;LogFileName=test-results.trx"
