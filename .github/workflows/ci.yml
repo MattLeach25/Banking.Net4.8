@@ -29,17 +29,4 @@ jobs:
         run: msbuild LegacyBanking.sln /p:Configuration=Release /p:Platform="Any CPU" /m
 
       - name: Test
-        shell: pwsh
-        run: |
-          $vstest = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
-          if (-not (Test-Path $vstest)) {
-            $vstest = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Professional\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
-          }
-          if (-not (Test-Path $vstest)) {
-            $vstest = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
-          }
-          if (-not (Test-Path $vstest)) {
-            throw "vstest.console.exe was not found on the runner."
-          }
-
-          & $vstest "tests\LegacyBanking.Tests\bin\Release\net48\LegacyBanking.Tests.dll"
+        run: dotnet test tests\LegacyBanking.Tests\LegacyBanking.Tests.csproj --configuration Release --framework net48 --logger "trx;LogFileName=test-results.trx"
